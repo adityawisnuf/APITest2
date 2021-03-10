@@ -9,7 +9,9 @@ db.connect(function(err){
 app.get('/api', function (req, res){
     var id = 'AND id LIKE \'%'+req.param('id')+'%\'';
     var bmId = 'AND backmarket_id LIKE \'%'+req.param('backmarket_id')+'%\'';
-    var title = 'AND title LIKE \'%'+req.param('title').replace(/ /g, '%')+'%\'';
+    var title = req.param('title')
+    title = title != undefined?title.replace(/ /g, '%'):title
+    title = 'AND title LIKE \'%'+title+'%\'';
     var marketplace_cat_id = 'AND marketplace_category_id LIKE \'%'+req.param('marketplace_category_id')+'%\''
     var getDataSQL = `SELECT * FROM backmarket_product WHERE 1 ${id} ${bmId} ${title} ${marketplace_cat_id}`;
     db.query(getDataSQL.replace(/undefined/g, ''), async function(err, result){
@@ -25,7 +27,9 @@ app.get('/api/:category', function (req, res){
     var Category = 'AND category_name LIKE \'%'+req.params.category+'%\'';
     var id = 'AND id LIKE \'%'+req.param('id')+'%\'';
     var bmId = 'AND backmarket_id LIKE \'%'+req.param('backmarket_id')+'%\'';
-    var title = 'AND title LIKE \'%'+req.param('title').replace(/ /g, '%')+'%\'';
+    var title = req.param('title')
+    title = title != undefined?title.replace(/ /g, '%'):title
+    title = 'AND title LIKE \'%'+title+'%\'';
     var marketplace_cat_id = 'AND marketplace_category_id LIKE \'%'+req.param('marketplace_category_id')+'%\''
     var getDataSQL = `SELECT * FROM backmarket_product WHERE 1 ${Category} ${id} ${bmId} ${title} ${marketplace_cat_id}`;
     db.query(getDataSQL.replace(/undefined/g, ''), async function(err, result){
@@ -41,5 +45,3 @@ app.listen(6464)
 console.log('Server started at http://backmarket.slyman.com/api/')
 
 })
-
-//cek cek ahiyyyy
